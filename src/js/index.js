@@ -1,13 +1,36 @@
-/**
- * To configure webpack we need to know the 4 concepts: 1- entry point; 2- the output; 3- loaders; 4- plugins.
- * 1- Entry point: Where the webpack will start to bundling. It'll look for all the dependecies which it should bundle together.
- * 2- The output: Where to save the bundled file
- * 3- Loaders: Loaders in Webpack allow us to import or to load all kinds of different files. And more importantly, to also process them. Like converting SASS to CSS Code or covert ES6 code to ES5 JavaScript.
-*/
+import Search from './models/Search';
 
-// Global app controller
-import num from './test';
-const x = 23;
-console.log(`I am ${num} from another module! Webpack set up!!! Variable x is ${x}`);
+// The State pattern provides state-specific logic to a limited set of objects in which each object represents a particular state.
+/** Global state of the app
+ * - Search object
+ * - Current recipe object
+ * - Shopping list object
+ * - Liked recipes
+ */
+const state = {};
 
-import styles from '../main.scss'
+const controlSearch = async () => {
+    // 1) Get the query from the view
+    const query = 'pizza'; //TODO
+    
+    // If the query is not undefined
+    if (query) {
+        // 2) New search object and add to state
+        state.search = new Search(query);
+
+        // 3) Prepare UI for results
+
+        // 4) Search for recipes
+        await state.search.getResults(); // Await the results here so the result can be render on step n. 5)
+
+        // 5) Render results on UI
+        console.log(state.search.result);
+    }
+
+}
+
+document.querySelector('.search').addEventListener('submit', e => {
+    e.preventDefault();
+    controlSearch();
+});
+
