@@ -107,6 +107,7 @@
     &__love:hover {        
         animation-name: pulse;
         animation-duration: 3s;
+        animation-timing-function: .2s;
         transform-origin:70% 70%;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
@@ -176,10 +177,6 @@
         width: 90%;
         margin-bottom: 3rem;
         color: #968B87; 
-    }
-        
-    &__by {
-        font-weight: 700; 
     }
 }
     
