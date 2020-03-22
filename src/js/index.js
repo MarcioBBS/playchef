@@ -1,4 +1,8 @@
+import styles from '.././main.scss';
 import Search from './models/Search';
+import * as searchView from './views/searchView';
+import { elements } from './views/base';
+;
 
 // The State pattern provides state-specific logic to a limited set of objects in which each object represents a particular state.
 /** Global state of the app
@@ -11,25 +15,26 @@ const state = {};
 
 const controlSearch = async () => {
     // 1) Get the query from the view
-    const query = 'pizza'; //TODO
+    const query = searchView.getInput();
     
-    // If the query is not undefined
+    // If there's a query
     if (query) {
         // 2) New search object and add to state
         state.search = new Search(query);
 
         // 3) Prepare UI for results
+        searchView.clearInput();
+        searchView.clearResults();
 
         // 4) Search for recipes
-        await state.search.getResults(); // Await the results here so the result can be render on step n. 5)
-
+        await state.search.getResults(); // Await the results until the promise is fulfilled, then it can be render on step 5
+        
         // 5) Render results on UI
-        console.log(state.search.result);
+        searchView.renderResults(state.search.result);
     }
-
 }
 
-document.querySelector('.search').addEventListener('submit', e => {
+elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
 });
