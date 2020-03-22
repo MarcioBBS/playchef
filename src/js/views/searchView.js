@@ -8,8 +8,6 @@ export const clearResults = () => {
     elements.searchResList.innerHTML = '';
 }
 
-
-
 /* Table test
 'Pasta with tomato and spinach'
 acc: 0 / acc + cur.length = 5 / newTitle = ['Pasta' ]
@@ -37,7 +35,7 @@ const reduceTitle = (title, limit = 17) => {
     return title;
 }
 
-const renderRecipe = recipe => {
+const createRecipeItem = recipe => {
     const markup = `
         <li>
             <a class="results__link" href="#${recipe.recipe_id}">
@@ -56,6 +54,6 @@ const renderRecipe = recipe => {
 };
 
 export const renderResults = recipes => {
-    // recipes.forEach(el => renderRecipe(el));
-    recipes.forEach(renderRecipe); // Same as the line above. The paramenter el is implicit here. 
+    // recipes.forEach(el => createRecipeItem(el));
+    recipes.forEach(createRecipeItem); // Same as the line above. The paramenter el is implicit here. 
 };
