@@ -42,3 +42,15 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
+// Render the pagination
+elements.searcResPages.addEventListener('click', e => {
+    e.preventDefault();
+    const btn = e.target.closest('.btn-inline');
+
+    if (btn) {
+        const goToPage = parseInt(btn.dataset.goto, 10);
+        searchView.clearResults(); // Clear result list
+        searchView.renderResults(state.search.result, goToPage); // To go the next or prev page
+    }    
+});
+
