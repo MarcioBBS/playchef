@@ -63,7 +63,7 @@ const createRecipeItem = recipe => {
 };
 
 /**
- * @param {number} page 
+ * @param {number} page - The number of the page
  * @param {String} type - type: 'prev' or 'next'
  */
 const createButton = (page, type) => `
@@ -77,7 +77,7 @@ const createButton = (page, type) => `
 
 /**
  * Render the pagination buttons 
- * @param {number} page - The number of the page
+ * @param {number} page - The number of the current page
  * @param {number} numResult - Total of the result
  * @param {number} resPerPage - Result per page to be rendered on the page
  */
