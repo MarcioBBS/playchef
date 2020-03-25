@@ -1,5 +1,6 @@
 import styles from '.././main.scss';
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import { elements, renderLoader, clearLoader } from './views/base';
 ;
@@ -13,13 +14,16 @@ import { elements, renderLoader, clearLoader } from './views/base';
  */
 const state = {};
 
+/**
+ * Search Controller
+ */
 const controlSearch = async () => {
     // 1) Get the query from the view
     const query = searchView.getInput();
     
     // If there's a query
     if (query) {
-        // 2) New search object and add to state
+        // 2) Create a search object and add it to the state object
         state.search = new Search(query);
 
         // 3) Prepare UI for results
@@ -27,12 +31,18 @@ const controlSearch = async () => {
         searchView.clearResults(); // Clear result list
         renderLoader(elements.searchRes); // Adds spinning loader icon
 
-        // 4) Search for recipes
-        await state.search.getResults(); // Await the results until the promise is fulfilled, then it can be render on step 5
-        
-        // 5) Render results on UI
-        clearLoader(); // Removes spinning loader icon
-        searchView.renderResults(state.search.result); // Render/Shows all result list
+        try {
+            // 4) Search for recipes
+            await state.search.getResults(); // Await the results until the promise is fulfilled, then it can be render on step 5
+
+            // 5) Render results on UI
+            clearLoader(); // Removes spinning loader icon
+            searchView.renderResults(state.search.result); // Render/Shows all result list
+
+        } catch (error) {
+            alert(`Something went wrong with the search ${error}`);
+            clearLoader(); // Removes spinning loader icon
+        }
     }
 }
 
@@ -54,3 +64,37 @@ elements.searcResPages.addEventListener('click', e => {
     }    
 });
 
+/**
+ * Recipe Controller
+ */
+
+const controlRecipe = async () => {
+    const id = window.location.hash.replace('#', ''); // Get the hash code from the url and remove the rash '#'
+    console.log(id);
+
+    if (id) {
+        // Prepare UI for changes
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+
+        try {
+        // Get recipe data
+        await state.recipe.getRecipe(); // Await the recipe until the promise is fulfilled.
+        
+        // Calculate servings and time
+        state.recipe.calcServings();
+        state.recipe.calcTime();
+
+        // Render recipe
+        console.log(state.recipe);
+
+        } catch (error) {
+            alert(`Something went wrong with this recipe ${error}`);
+        }
+    }
+}
+
+// window.addEventListener('hashchange', controlRecipe);
+// window.addEventListener('load', controlRecipe);
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe)); 
