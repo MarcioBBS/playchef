@@ -32,7 +32,7 @@ export default class Recipe {
     }
 
     parseIngredients() {
-        const longUnit = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pound', 'pounds'];
+        const longUnit = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds', 'pound'];
         const shortUnit = ['tbsp','tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'lb', 'lb'];
 
         const newIngredients = this.ingredients.map(el => {
@@ -58,9 +58,9 @@ export default class Recipe {
                 const arrCount = arrIng.slice(0, unitIndex);
 
                 if ( arrCount.length === 1 ) { // Is only one element/number before the unit?
-                    count = eval(arrIng[0].replace('-', '+'));
+                    count = eval(arrIng[0].replace('-', '+')).toFixed(1);
                 } else {
-                    count = eval(arrIng.slice(0, unitIndex).join('+')); // Ex1: [4, 1/2].join('+') = '4 + 1/2' ---> eval('4 + 1/2') = 4.5
+                    count = eval(arrIng.slice(0, unitIndex).join('+')).toFixed(1); // Ex1: [4, 1/2].join('+') = '4 + 1/2' ---> eval('4 + 1/2') = 4.5
                 }
 
                 objIng = {
