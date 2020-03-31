@@ -29,6 +29,9 @@ export default class List {
         
         // Update the ingredient item count.
         updateCount(id, newCount) {
-            this.item.find(el => el.id === id).count = newCount;
+            if (id) {
+                this.items.find(el => el.id === id).count = newCount;
+            }
+            
         }
 }
