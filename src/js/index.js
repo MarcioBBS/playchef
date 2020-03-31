@@ -107,3 +107,20 @@ const controlRecipe = async () => {
 // window.addEventListener('hashchange', controlRecipe);
 // window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe)); 
+
+// Handling recipe servings buttons
+
+elements.recipe.addEventListener('click', ele => {
+    if (ele.target.matches('.btn-decrease, .btn-decrease *')) { // '.btn-decrease *'  means apply it for all the children
+        // Decrease servings
+        if (state.recipe.servings > 1) {
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+        
+    } else if (ele.target.matches('.btn-increase, .btn-increase *')) {
+        // Increase servings
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+});
