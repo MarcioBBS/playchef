@@ -1,6 +1,7 @@
 import styles from '.././main.scss';
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
@@ -71,7 +72,6 @@ elements.searcResPages.addEventListener('click', e => {
 
 const controlRecipe = async () => {
     const id = window.location.hash.replace('#', ''); // Get the hash code from the url and remove the rash '#'
-    console.log(id);
 
     if (id) {
         // Prepare UI for changes
@@ -87,7 +87,6 @@ const controlRecipe = async () => {
         try {
         // Get recipe data and parse the ingredients
         await state.recipe.getRecipe(); // Await the recipe until the promise is fulfilled.
-        console.log(state.recipe.ingredients);
         state.recipe.parseIngredients();
         
         // Calculate servings and time
@@ -102,6 +101,10 @@ const controlRecipe = async () => {
             alert(`Something went wrong with this recipe ${error}`);
         }
     }
+}
+
+const controlList = () => {
+
 }
 
 // window.addEventListener('hashchange', controlRecipe);
@@ -124,3 +127,6 @@ elements.recipe.addEventListener('click', ele => {
         recipeView.updateServingsIngredients(state.recipe);
     }
 });
+
+
+window.l = new List();
