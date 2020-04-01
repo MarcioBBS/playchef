@@ -2,6 +2,7 @@ import styles from '.././main.scss';
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
+import * as listView from './views/listView';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
@@ -15,6 +16,8 @@ import { elements, renderLoader, clearLoader } from './views/base';
  * - Liked recipes
  */
 const state = {};
+
+window.state = state;
 
 /**
  * Search Controller
@@ -103,16 +106,44 @@ const controlRecipe = async () => {
     }
 }
 
-const controlList = () => {
-
-}
-
 // window.addEventListener('hashchange', controlRecipe);
 // window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe)); 
 
-// Handling recipe servings buttons
+/**
+ * List Controller
+ */
+const controlList = () => {
+    // Create a new lst IF there's none yet
+    if (!state.list) state.list = new List();
 
+    // Add each ingredient to the list and UI
+    state.recipe.ingredients.forEach(el => {
+        const item = state.list.addItem(el.count, el.unit, el.ingredient);
+        listView.renderItem(item);
+    });
+}
+
+// Delete and update list item event
+elements.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid;      
+
+    // Delete ingredient
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // Delete from state
+        state.list.deleteItem(id);        
+        // Delete and Update UI
+        listView.deleteItem(id);
+
+
+    // Update the ingredient count
+    } else if (e.target.matches('.shopping__count-value')) {
+        const val = parseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+});
+
+// Handling recipe servings buttons
 elements.recipe.addEventListener('click', ele => {
     if (ele.target.matches('.btn-decrease, .btn-decrease *')) { // '.btn-decrease *'  means apply it for all the children
         // Decrease servings
@@ -125,8 +156,8 @@ elements.recipe.addEventListener('click', ele => {
         // Increase servings
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
+
+    } else if (ele.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
 });
-
-
-window.l = new List();
