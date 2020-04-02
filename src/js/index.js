@@ -1,16 +1,12 @@
 import styles from '.././main.scss';
-
-import Likes from './models/Likes';
-import List from './models/List';
-import Recipe from './models/Recipe';
 import Search from './models/Search';
-
+import Recipe from './models/Recipe';
+import List from './models/List';
 import * as listView from './views/listView';
-import * as recipeView from './views/recipeView';
 import * as searchView from './views/searchView';
-import * as likesView from './views/likesView';
-
+import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
+;
 
 // The State pattern provides state-specific logic to a limited set of objects in which each object represents a particular state.
 /** Global state of the app
@@ -24,7 +20,7 @@ const state = {};
 window.state = state;
 
 /**
- * SEARCH CONTROLLER
+ * Search Controller
  */
 const controlSearch = async () => {
     // 1) Get the query from the view
@@ -74,7 +70,7 @@ elements.searcResPages.addEventListener('click', e => {
 });
 
 /**
- * RECIPE CONTROLLER
+ * Recipe Controller
  */
 
 const controlRecipe = async () => {
@@ -115,7 +111,7 @@ const controlRecipe = async () => {
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe)); 
 
 /**
- * LIST CONTROLLER
+ * List Controller
  */
 const controlList = () => {
     // Create a new lst IF there's none yet
@@ -147,41 +143,6 @@ elements.shopping.addEventListener('click', e => {
     }
 });
 
-/**
- * LIKE CONTROLLER
- */
-const controlLike = () => {
-    if (!state.likes) state.likes = new Likes();
-    const recipeID = state.recipe.id;
-    
-    // User has NOT yet liked the current recipe
-    if (!state.likes.isLiked(recipeID)) {
-        // Add like to the state
-        const newLike = state.likes.addLike(
-            recipeID,
-            state.recipe.title,
-            state.recipe.author,
-            state.recipe.img
-        );
-
-        // Toggle the like button
-
-        // Add like to UI list
-        console.log(state.likes);
-
-    // User HAS liked the current recipe
-    } else {
-        // Remove like to the state
-        state.likes.deleteLike(recipeID);
-
-        // Toggle the like button
-
-        // Remove like to UI list        
-        console.log(state.likes);
-    }
-}
-
-
 // Handling recipe servings buttons
 elements.recipe.addEventListener('click', ele => {
     if (ele.target.matches('.btn-decrease, .btn-decrease *')) { // '.btn-decrease *'  means apply it for all the children
@@ -197,13 +158,6 @@ elements.recipe.addEventListener('click', ele => {
         recipeView.updateServingsIngredients(state.recipe);
 
     } else if (ele.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-        // Add ingredients to shopping list
         controlList();
-
-    } else if (ele.target.matches('.recipe__love, .recipe__love *')) {
-        // Add or Remove like
-        controlLike();
     }
-
-    
 });
