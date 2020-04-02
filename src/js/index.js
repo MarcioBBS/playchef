@@ -150,11 +150,6 @@ elements.shopping.addEventListener('click', e => {
 /**
  * LIKE CONTROLLER
  */
-
-// FOR TEST ONLY
-state.likes = new Likes();
-likesView.toogleLikeMenu(state.likes.getNumLikes());
-
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
     const recipeID = state.recipe.id;
@@ -172,9 +167,8 @@ const controlLike = () => {
         // Toggle the like button
         likesView.toogleLikeBtn(true);
 
-        // Add like to UI list
-        const reducedTitle =  searchView.reduceTitle(state.recipe.title);
-        likesView.renderLike(newLike, reducedTitle);
+        // Add like to UI list        
+        likesView.renderLike(newLike);
 
     // User HAS liked the current recipe
     } else {
@@ -191,7 +185,23 @@ const controlLike = () => {
     likesView.toogleLikeMenu(state.likes.getNumLikes());
 };
 
-// Handling recipe servings buttons
+// Restore liked recipe on page load
+window.addEventListener('load', () => {
+    state.likes = new Likes();
+
+    // Restore likes
+    state.likes.readStorage();
+
+    // Toggle like menu button
+    likesView.toogleLikeMenu(state.likes.getNumLikes());
+
+    // Render the stored likes
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+
+
+});
+
+// Handling recipe button clicks
 elements.recipe.addEventListener('click', ele => {
     if (ele.target.matches('.btn-decrease, .btn-decrease *')) { // '.btn-decrease *'  means apply it for all the children
         // Decrease servings

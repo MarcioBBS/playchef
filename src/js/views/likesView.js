@@ -1,4 +1,5 @@
 import { elements } from './base';
+import { reduceTitle } from './searchView';
 
 export const toogleLikeBtn = isLiked => {
     const iconString = isLiked ? 'icon-heart' : 'icon-heart-outlined';
@@ -9,7 +10,9 @@ export const toogleLikeMenu = numLikes => {
     elements.likesMenu.style.visibility = numLikes > 0 ? 'visible' : 'hidden';
 }
 
-export const renderLike = (like, title) => {
+export const renderLike = (like) => {
+    const title = reduceTitle(like.title);
+
     const markup = `
         <li>
             <a class="likes__link" href="#${like.id}">
