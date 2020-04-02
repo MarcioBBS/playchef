@@ -1,0 +1,26 @@
+.container {
+    max-width: 120rem;
+    margin: 4vw auto;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2rem 6rem 0.5rem rgba(101, 90, 86, 0.2);
+    display: grid;
+    grid-template-rows: 10rem minmax(100rem, auto);
+    grid-template-columns: 1.1fr 2fr 1.1fr;
+    grid-template-areas: "head head head" "list recipe shopping"; 
+
+}
+
+.loader {
+    margin: 5rem auto;
+    text-align: center; 
+}
+    
+.loader svg {
+    height: 5.5rem;
+    width: 5.5rem;
+    fill: #ff6000;
+    transform-origin: 44% 50%;
+    animation: rotate 1.5s infinite linear; 
+} 
