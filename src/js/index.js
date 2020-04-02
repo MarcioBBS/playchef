@@ -5,10 +5,10 @@ import List from './models/List';
 import Recipe from './models/Recipe';
 import Search from './models/Search';
 
+import * as likesView from './views/likesView';
 import * as listView from './views/listView';
 import * as recipeView from './views/recipeView';
 import * as searchView from './views/searchView';
-import * as likesView from './views/likesView';
 
 import { elements, renderLoader, clearLoader } from './views/base';
 
@@ -102,7 +102,7 @@ const controlRecipe = async () => {
 
         // Render recipe
         clearLoader();
-        recipeView.renderRecipe(state.recipe);
+        recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
 
         } catch (error) {
             alert(`Something went wrong with this recipe ${error}`);
@@ -150,6 +150,11 @@ elements.shopping.addEventListener('click', e => {
 /**
  * LIKE CONTROLLER
  */
+
+// FOR TEST ONLY
+state.likes = new Likes();
+likesView.toogleLikeMenu(state.likes.getNumLikes());
+
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
     const recipeID = state.recipe.id;
@@ -165,9 +170,11 @@ const controlLike = () => {
         );
 
         // Toggle the like button
+        likesView.toogleLikeBtn(true);
 
         // Add like to UI list
-        console.log(state.likes);
+        const reducedTitle =  searchView.reduceTitle(state.recipe.title);
+        likesView.renderLike(newLike, reducedTitle);
 
     // User HAS liked the current recipe
     } else {
@@ -175,12 +182,14 @@ const controlLike = () => {
         state.likes.deleteLike(recipeID);
 
         // Toggle the like button
+        likesView.toogleLikeBtn(false);
 
-        // Remove like to UI list        
-        console.log(state.likes);
+        // Remove like to UI list
+        likesView.deleteLike(recipeID);
     }
-}
 
+    likesView.toogleLikeMenu(state.likes.getNumLikes());
+};
 
 // Handling recipe servings buttons
 elements.recipe.addEventListener('click', ele => {
@@ -204,6 +213,4 @@ elements.recipe.addEventListener('click', ele => {
         // Add or Remove like
         controlLike();
     }
-
-    
 });
